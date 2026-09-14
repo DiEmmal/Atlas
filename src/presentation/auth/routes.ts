@@ -1,23 +1,23 @@
 import { Router } from 'express';
 import { AuthController } from './controller.js';
-import { UserDatasourceImpl, UserRepositoryImpl, AuthServiceImpl , EmailServiceImpl } from '../../infrastructure/index.js';
+import type { UserRepository } from '../../domain/index.js';
+import type { AuthService } from '../../domain/index.js';
 
 export class AuthRoutes {
 
-  static get routes(): Router {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly authService: AuthService,
+  ) { };
+
+  public routes(): Router {
     const router = Router();
 
-    const emailService = new EmailServiceImpl();
-    const authService = new AuthServiceImpl(emailService);
-
-    const userDatasource = new UserDatasourceImpl();
-    const userRepository = new UserRepositoryImpl(userDatasource);
-
-    const controller = new AuthController(userRepository, authService);
+    const controller = new AuthController(this.userRepository, this.authService);
 
     router.post('/login', controller.login);
     router.post('/register', controller.register);
-    router.get('/validate-email/:token', controller.validateEmail );
+    router.get('/validate-email/:token', controller.validateEmail);
 
     return router;
   };

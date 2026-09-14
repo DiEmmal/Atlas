@@ -10,18 +10,28 @@ export class UpdateUserDto {
 
         const { name, password } = props;
 
-        if (password !== undefined && password !== null && password !== '' && password.length < 6) {
-            return { error: 'Password must be at least 6 characters long' };
+        let normalizedName: string | undefined;
+        let normalizedPassword: string | undefined;
+
+        if (name !== undefined) {
+            if (typeof name !== 'string') return { error: 'User name must be a string' };
+            normalizedName = name.trim();
+            if (normalizedName === '') return { error: 'User name is required' };
+            if (normalizedName.length < 3) return { error: 'User name must be at least 3 characters long' };
         };
 
-        if (password === '') return { error: 'Password must be at least 6 characters long' };
-
-        if (name !== undefined && name === '') return { error: 'You can not leave name empty' };
+        if (password !== undefined) {
+            if (typeof password !== 'string') return { error: 'User password must be a string' };
+            if (password.trim() === '') return { error: 'User password is required' };
+            if (/\s/.test(password)) return { error: 'User password must not contain spaces' };
+            if (password.length < 6) return { error: 'Password must be at least 6 characters long' };
+            normalizedPassword = password;
+        };
 
         const hasDataToUpdate = name !== undefined || password !== undefined;
         if (!hasDataToUpdate) return { error: 'At least one field is required to update' };
 
-        return { dto: new UpdateUserDto( name, password) };
+        return { dto: new UpdateUserDto(normalizedName, normalizedPassword) };
 
     };
 }

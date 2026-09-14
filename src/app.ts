@@ -1,7 +1,7 @@
 import { envs } from "./config/envs.js";
 import { AppRoutes } from "./presentation/routes.js";
 import { Server } from "./presentation/server.js";
-import { MongoDatabase} from "./infrastructure/data/mongo/init.js";
+import { MongoDatabase } from "./infrastructure/data/mongo/init.js";
 
 (() => {
   main();
@@ -17,7 +17,7 @@ async function main() {
 
   const server = new Server({
     port: envs.PORT,
-    routes: appRoutes.routes,
+    routes: appRoutes.routes(),
     public_path: envs.PUBLIC_PATH,
   });
 
