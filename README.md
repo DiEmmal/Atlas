@@ -65,3 +65,6 @@ npm run build && npm run start
 | /api/posts              |  POST  | Make a new post with title and content, you need to be authenticated |
 | /api/posts              |  GET   |     Get all posts, you can see the posts without being authenticated |
 | /api/posts/:postID/like |  POST  |                            Like a post, you need to be authenticated |
+| /api/users/:userID      |  GET   |                       Get a user by ID, you need to be authenticated |
+| /api/users              |  GET   |                                               Get all existing users |
+| /api/users/:userID      |  PUT   |                          Update a user, you need to be authenticated |

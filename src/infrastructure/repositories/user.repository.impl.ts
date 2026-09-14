@@ -1,4 +1,4 @@
-import { CreateUserDto, LoginUserDto, UserDatasource, UserEntity, UserRepository } from "../../domain/index.js";
+import { CreateUserDto, LoginUserDto, PaginationDto, UpdateUserDto, UserDatasource, UserEntity, UserRepository } from "../../domain/index.js";
 
 export class UserRepositoryImpl implements UserRepository {
 
@@ -18,6 +18,18 @@ export class UserRepositoryImpl implements UserRepository {
 
     async findByEmail(email: string): Promise<UserEntity | null> {
         return this.userDatasource.findByEmail(email);
+    };
+
+    async getUsers(dto: PaginationDto): Promise<{ users: UserEntity[], total: number }> {
+        return this.userDatasource.getUsers(dto);
+    };
+
+    async getUserById(userID: string): Promise<UserEntity> {
+        return this.userDatasource.getUserById(userID);
+    };
+
+    async updateUser(dto: UpdateUserDto, userID: string): Promise<UserEntity> {
+        return this.userDatasource.updateUser(dto, userID);
     };
 
 };

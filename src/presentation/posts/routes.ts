@@ -23,10 +23,10 @@ export class PostsRoutes {
 
     const controller = new PostsController(repository);
 
-    router.get('/', controller.getPosts);
     router.post('/', [authMiddleware.validateJWT], controller.createPost);
     router.post('/:postID/likes', [authMiddleware.validateJWT], controller.toggleLike);
     router.post('/:postID/comments', [authMiddleware.validateJWT], controller.addComent);
+    router.get('/', controller.getPosts);
 
     return router;
   };

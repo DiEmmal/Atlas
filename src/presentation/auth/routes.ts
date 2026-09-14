@@ -3,6 +3,7 @@ import { AuthController } from './controller.js';
 import { UserDatasourceImpl, UserRepositoryImpl, AuthServiceImpl , EmailServiceImpl } from '../../infrastructure/index.js';
 
 export class AuthRoutes {
+
   static get routes(): Router {
     const router = Router();
 
