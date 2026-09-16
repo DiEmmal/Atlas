@@ -48,6 +48,14 @@ docker compose up -d
 npm run dev
 ```
 
+To load fake development data, with MongoDB running, use:
+
+```bash
+npm run seed
+```
+
+The seed replaces the users, posts and comments in the configured database. All seeded users use the password `Password123!`.
+
 For production, use:
 
 ```bash
