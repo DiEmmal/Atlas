@@ -18,6 +18,7 @@ export class AppRoutes {
         const postsRoutes = new PostsRoutes(
             dependencies.postRepository,
             dependencies.authMiddleware,
+            dependencies.imageService,
         );
 
         const usersRoutes = new UsersRoutes(

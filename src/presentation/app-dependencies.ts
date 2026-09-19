@@ -1,4 +1,4 @@
-import { AuthServiceImpl, EmailServiceImpl, PostDatasourceImpl, PostRepositoryImpl, UserDatasourceImpl, UserRepositoryImpl } from "../infrastructure/index.js";
+import { AuthServiceImpl, EmailServiceImpl, ImageServiceImpl, PostDatasourceImpl, PostRepositoryImpl, UserDatasourceImpl, UserRepositoryImpl } from "../infrastructure/index.js";
 import { AuthMiddleware } from "./middlewares/auth.middleware.js";
 
 export class AppDependencies {
@@ -11,6 +11,7 @@ export class AppDependencies {
 
     public readonly postDatasource = new PostDatasourceImpl();
     public readonly postRepository = new PostRepositoryImpl(this.postDatasource);
+    public readonly imageService = new ImageServiceImpl();
 
     public readonly authMiddleware = new AuthMiddleware(
         this.userRepository,

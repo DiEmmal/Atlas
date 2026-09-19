@@ -62,17 +62,30 @@ For production, use:
 npm run build && npm run start
 ```
 
-## Authentication
+## API Endpoints
 
-### Endpoints
+All protected endpoints require a valid JWT. Post creation accepts `multipart/form-data` with an optional `image` file field. The current upload limit is 5 MB.
 
-| Endpoint                | Method |                                                          Description |
-| :---------------------- | :----: | -------------------------------------------------------------------: |
-| /api/auth/register      |  POST  |                    Register a new user with email, name and password |
-| /api/auth/login         |  POST  |                      Log in an existing user with email and password |
-| /api/posts              |  POST  | Make a new post with title and content, you need to be authenticated |
-| /api/posts              |  GET   |     Get all posts, you can see the posts without being authenticated |
-| /api/posts/:postID/like |  POST  |                            Like a post, you need to be authenticated |
-| /api/users/:userID      |  GET   |                       Get a user by ID, you need to be authenticated |
-| /api/users              |  GET   |                                               Get all existing users |
-| /api/users/:userID      |  PUT   |                          Update a user, you need to be authenticated |
+| Endpoint                        | Method |                                                                      Description |
+| :------------------------------ | :----: | -------------------------------------------------------------------------------: |
+| /api/auth/register              |  POST  |                                Register a new user with email, name and password |
+| /api/auth/login                 |  POST  |                                  Log in an existing user with email and password |
+| /api/auth/validate-email/:token |  GET   |                                                  Validate a user's email address |
+| /api/posts                      |  POST  | Create a post with title, content and an optional image, authentication required |
+| /api/posts                      |  GET   |                 Get all posts, you can see the posts without being authenticated |
+| /api/posts/:postID/likes        |  POST  |                                      Toggle a post like, authentication required |
+| /api/posts/:postID/comments     |  POST  |                                 Add a comment to a post, authentication required |
+| /api/posts/image/:fileName      |  GET   |                                                  Retrieve an uploaded post image |
+| /api/users/:userID              |  GET   |                                                                 Get a user by ID |
+| /api/users                      |  GET   |                                                           Get all existing users |
+| /api/users/:userID              |  PUT   |                                           Update a user, authentication required |
+
+### Create a post with an image
+
+Send the request as `multipart/form-data`:
+
+- `title`: post title
+- `content`: post content
+- `image`: optional image file (`jpg`, `jpeg`, `png` or `gif`)
+
+The created post stores the generated image filename in `img`. The response also includes `imgURL` for retrieving the image.

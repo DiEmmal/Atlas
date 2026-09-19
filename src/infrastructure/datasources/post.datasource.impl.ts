@@ -4,7 +4,7 @@ import { PostModel } from "../data/mongo/models/post.model.js";
 
 export class PostDatasourceImpl implements PostDatasource {
 
-    async createPost(dto: CreatePostDto, user: UserEntity): Promise<PostEntity> {
+    async createPost(dto: CreatePostDto, user: UserEntity, imgName: string | undefined): Promise<PostEntity> {
 
         const newPost = new PostEntity({
             author: {
@@ -13,9 +13,11 @@ export class PostDatasourceImpl implements PostDatasource {
             },
             content: dto.content,
             title: dto.title,
+            img: imgName ?? '',
         });
 
         const savedPost = await PostModel.create(newPost);
+        console.log(`post imaged: ${savedPost.img}`);
 
         return PostEntity.fromObject(savedPost);
 

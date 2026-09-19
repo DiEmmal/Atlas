@@ -6,8 +6,9 @@ export class PostRepositoryImpl implements PostRepository {
         private readonly postDatasource: PostDatasource
     ) { };
 
-    async createPost(dto: CreatePostDto, user: UserEntity): Promise<PostEntity> {
-        return this.postDatasource.createPost(dto, user);
+
+    async createPost(dto: CreatePostDto, user: UserEntity, imgName: string | undefined): Promise<PostEntity> {
+        return this.postDatasource.createPost(dto, user, imgName);
     };
 
     async getPosts(dto: PaginationDto): Promise<{ posts: PostEntity[], total: number }> {

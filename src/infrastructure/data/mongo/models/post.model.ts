@@ -29,6 +29,10 @@ const postSchema = new mongoose.Schema({
   comments: {
     type: [String],
     default: [],
+  },
+  img: {
+    type: String,
+    default: '',
   }
 });
 
