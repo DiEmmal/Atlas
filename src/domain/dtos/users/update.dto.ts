@@ -2,9 +2,10 @@ export class UpdateUserDto {
     private constructor(
         public readonly name?: string,
         public readonly password?: string,
+        public readonly img?: string,
     ) { };
 
-    public static create(props: { [key: string]: any }): { error?: string, dto?: UpdateUserDto } {
+    public static create(props: { [key: string]: any }, hasImage = false): { error?: string, dto?: UpdateUserDto } {
 
         if (!props) return { error: 'Data is empty' };
 
@@ -28,10 +29,14 @@ export class UpdateUserDto {
             normalizedPassword = password;
         };
 
-        const hasDataToUpdate = name !== undefined || password !== undefined;
+        const hasDataToUpdate = name !== undefined || password !== undefined || hasImage;
         if (!hasDataToUpdate) return { error: 'At least one field is required to update' };
 
         return { dto: new UpdateUserDto(normalizedName, normalizedPassword) };
 
+    };
+
+    public withImage(imageName: string): UpdateUserDto {
+        return new UpdateUserDto(this.name, this.password, imageName);
     };
 }

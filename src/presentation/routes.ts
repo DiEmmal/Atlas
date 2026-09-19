@@ -24,6 +24,7 @@ export class AppRoutes {
         const usersRoutes = new UsersRoutes(
             dependencies.userRepository,
             dependencies.authMiddleware,
+            dependencies.imageService,
         );
 
         router.use('/api/auth', authRoutes.routes());

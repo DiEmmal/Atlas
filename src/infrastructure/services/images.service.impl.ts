@@ -5,23 +5,22 @@ import fs from "node:fs/promises";
 
 export class ImageServiceImpl extends ImageService {
 
-    public async uploadImage(file: ImageFile): Promise<string> {
+    public async uploadImage(file: ImageFile, folder: string): Promise<string> {
 
         try {
             const fileExtension = file.name.split('.').pop();
-            
+
             const validExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if (!validExtensions.includes(fileExtension!)) {
                 throw CustomHttpError.badRequest('Invalid file extension');
             };
 
-            if(file.size > 5 * 1024 * 1024) {
+            if (file.size > 5 * 1024 * 1024) {
                 throw CustomHttpError.badRequest('File size exceeds the limit of 5MB');
             };
 
-            await fs.mkdir(path.resolve(process.cwd(), 'uploads'), { recursive: true });
-
-            const imagePath = path.resolve(process.cwd(), 'uploads');
+            const imagePath = path.resolve(process.cwd(), 'uploads', folder);
+            await fs.mkdir(imagePath, { recursive: true });
 
             const fileName = `${getUUID()}.${fileExtension}`;
 
@@ -36,9 +35,9 @@ export class ImageServiceImpl extends ImageService {
 
     };
 
-    public async getImage(fileName: string): Promise<string> {
+    public async getImage(fileName: string, folder: string): Promise<string> {
 
-        const imagePath = path.resolve(process.cwd(), 'uploads');
+        const imagePath = path.resolve(process.cwd(), 'uploads', folder);
         const filePath = path.join(imagePath, fileName);
 
         try {

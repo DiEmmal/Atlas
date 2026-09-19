@@ -6,6 +6,6 @@ export interface ImageFile {
 };
 
 export abstract class ImageService {
-    abstract uploadImage(file: ImageFile): Promise<string>;
-    abstract getImage(fileName: string): Promise<string>;
+    abstract uploadImage(file: ImageFile, folder: string): Promise<string>;
+    abstract getImage(fileName: string, folder: string): Promise<string>;
 };

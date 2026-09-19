@@ -95,10 +95,11 @@ export class UserDatasourceImpl implements UserDatasource {
     public async updateUser(dto: UpdateUserDto, userID: string): Promise<UserEntity> {
 
         try {
-            const updateData: { name?: string; password?: string } = {};
+            const updateData: { name?: string; password?: string; img?: string } = {};
 
             if (dto.name !== undefined) updateData.name = dto.name;
             if (dto.password !== undefined) updateData.password = dto.password;
+            if (dto.img !== undefined) updateData.img = dto.img;
 
             const user = await UserModel.findOneAndUpdate(
                 { id: userID },

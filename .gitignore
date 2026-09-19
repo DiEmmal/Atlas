@@ -2,7 +2,5 @@
 /dist/
 .env
 /mongo/
-/uploads/*.jpg
-/uploads/*.jpeg
-/uploads/*.png
-/uploads/*.gif
+/uploads/posts/
+/uploads/users/

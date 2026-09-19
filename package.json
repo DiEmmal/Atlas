@@ -1,7 +1,7 @@
 {
-  "name": "user_store",
+  "name": "atlas",
   "version": "1.0.0",
-  "description": "Social Media API",
+  "description": "Atlas is a social media API built with Node.js, Express, and MongoDB. It provides endpoints for user registration, authentication, post creation, liking posts, commenting on posts, and retrieving user information.",
   "main": "dist/app.js",
   "type": "module",
   "scripts": {

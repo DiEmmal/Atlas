@@ -8,7 +8,7 @@ export class GetPostImageUseCase {
     ) { };
 
     public async execute(imgName: string): Promise<string> {
-        return this.imageService.getImage(imgName);
+        return this.imageService.getImage(imgName, 'posts');
     };
 
 };

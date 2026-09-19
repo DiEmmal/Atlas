@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  img: {
+    type: String,
+    default: '',
+  }
 });
 
 export const UserModel = mongoose.model('User', userSchema);

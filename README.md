@@ -1,6 +1,6 @@
-# Social Media API
+# ATLAS
 
-A social media API for user authentication, profile management, and future social features.
+ATLAS is a social media API built with Node.js, Express, and MongoDB. It provides endpoints for user registration, authentication, post creation, liking posts, commenting on posts, and retrieving user information.
 
 ## Getting Started
 
@@ -9,7 +9,7 @@ To run the application, you need to have Node.js, npm, and docker installed. The
 1. Clone the repository
 
 ```bash
-git clone https://github.com/DiEmmal/social_media_api.git
+git clone https://github.com/DiEmmal/Atlas.git
 ```
 
 2. Install dependencies
@@ -77,6 +77,7 @@ All protected endpoints require a valid JWT. Post creation accepts `multipart/fo
 | /api/posts/:postID/comments     |  POST  |                                 Add a comment to a post, authentication required |
 | /api/posts/image/:fileName      |  GET   |                                                  Retrieve an uploaded post image |
 | /api/users/:userID              |  GET   |                                                                 Get a user by ID |
+| /api/users/image/:fileName      |  GET   |                                                  Retrieve an uploaded user image |
 | /api/users                      |  GET   |                                                           Get all existing users |
 | /api/users/:userID              |  PUT   |                                           Update a user, authentication required |
 
@@ -89,3 +90,7 @@ Send the request as `multipart/form-data`:
 - `image`: optional image file (`jpg`, `jpeg`, `png` or `gif`)
 
 The created post stores the generated image filename in `img`. The response also includes `imgURL` for retrieving the image.
+
+Post images are stored in the `uploads/posts/` subdirectory. Other image types can use their own subdirectory through the image service.
+
+User images are uploaded only through `PUT /api/users/:userID` using the optional `image` field in `multipart/form-data`. They are stored in `uploads/users/`.
