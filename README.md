@@ -62,6 +62,14 @@ For production, use:
 npm run build && npm run start
 ```
 
+For testing, use:
+
+```bash
+npm run test
+```
+
+You need to create a `.env.test` file with the same variables as `.env`, but with a different database name to avoid overwriting your development data.
+
 ## API Endpoints
 
 All protected endpoints require a valid JWT. Post creation accepts `multipart/form-data` with an optional `image` file field. The current upload limit is 5 MB.

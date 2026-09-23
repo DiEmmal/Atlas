@@ -5,3 +5,4 @@
 /uploads/posts/
 /uploads/users/
 /coverage/
+.env.test
