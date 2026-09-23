@@ -77,7 +77,7 @@ All protected endpoints require a valid JWT. Post creation accepts `multipart/fo
 | /api/posts/:postID/comments     |  POST  |                                 Add a comment to a post, authentication required |
 | /api/posts/image/:fileName      |  GET   |                                                  Retrieve an uploaded post image |
 | /api/users/:userID              |  GET   |                                                                 Get a user by ID |
-| /api/users/image/:fileName      |  GET   |                                                  Retrieve an uploaded user image |
+| /api/users/:userID/image        |  GET   |                                                  Retrieve an uploaded user image |
 | /api/users                      |  GET   |                                                           Get all existing users |
 | /api/users/:userID              |  PUT   |                                           Update a user, authentication required |
 

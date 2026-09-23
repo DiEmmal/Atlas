@@ -13,7 +13,7 @@ export class CreatePostUseCase {
 
     public async execute(dto: CreatePostDto, user: UserEntity, image?: ImageFile): Promise<PostEntity> {
         let imgName: string | undefined;
-        if (image) imgName = await this.imageService.uploadImage(image, 'posts');
+        if (image) imgName = await this.imageService.uploadImage(image, undefined, 'posts');
 
         return this.postRepository.createPost(dto, user, imgName);
     };

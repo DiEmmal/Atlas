@@ -6,8 +6,8 @@ export class GetUserImageUseCase {
         private readonly imageService: ImageService,
     ) { };
 
-    public async execute(imgName: string): Promise<string> {
-        return this.imageService.getImage(imgName, 'users');
+    public async execute(userID: string): Promise<string> {
+        return this.imageService.getImage(userID, 'users');
     };
 
 };

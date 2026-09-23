@@ -33,7 +33,7 @@ export class ImageServiceImpl extends ImageService {
         return normalizedFolder;
     }
 
-    public async uploadImage(file: ImageFile, folder: string): Promise<string> {
+    public async uploadImage(file: ImageFile, userID: string | undefined, folder: string): Promise<string> {
 
         try {
             const safeFileName = this.sanitizeName(file.name, 'file name');
@@ -62,7 +62,8 @@ export class ImageServiceImpl extends ImageService {
 
             await fs.mkdir(imagePath, { recursive: true });
 
-            const fileName = `${getUUID()}.${fileExtension}`;
+            const safeUserID = userID ? this.sanitizeName(userID, 'user id') : undefined;
+            const fileName = safeUserID ? `${safeUserID}.${fileExtension}` : `${getUUID()}.${fileExtension}`;
             const targetPath = path.join(imagePath, fileName);
 
             if (targetPath.startsWith(imagePath) === false) {
@@ -86,11 +87,25 @@ export class ImageServiceImpl extends ImageService {
             const safeFolder = this.sanitizeFolder(folder);
             const basePath = path.resolve(process.cwd(), 'uploads');
             const imagePath = path.resolve(basePath, safeFolder);
-            const filePath = path.resolve(imagePath, safeFileName);
+            let filePath = path.resolve(imagePath, safeFileName);
             const relativePath = path.relative(imagePath, filePath);
 
             if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
                 throw CustomHttpError.badRequest('Invalid image path');
+            }
+
+            if (safeFolder === 'users' && !path.extname(safeFileName)) {
+                const imageFiles = await fs.readdir(imagePath);
+                const matchingImage = imageFiles.find(imageFile => {
+                    const extension = path.extname(imageFile).slice(1).toLowerCase();
+                    return imageFile.startsWith(`${safeFileName}.`) && ImageServiceImpl.validExtensions.has(extension);
+                });
+
+                if (!matchingImage) {
+                    throw CustomHttpError.notFound(`Image not found for user: ${safeFileName}`);
+                }
+
+                filePath = path.resolve(imagePath, matchingImage);
             }
 
             await fs.access(filePath);

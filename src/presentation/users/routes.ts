@@ -21,7 +21,7 @@ export class UsersRoutes {
         const controller = new UserController(this.userRepository, this.imageService, this.errorService);
 
         router.get('/', controller.getUsers);
-        router.get('/image/:fileName', controller.getUserImage);
+        router.get('/:userID/image', controller.getUserImage);
         router.get('/:userID', controller.getUserById);
         router.put('/:userID', [this.authMiddleware.validateJWT], controller.updateUser);
 

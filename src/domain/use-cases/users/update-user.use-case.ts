@@ -12,7 +12,7 @@ export class UpdateUserUseCase {
 
     async execute(dto: UpdateUserDto, userID: string, image?: ImageFile): Promise<UserEntity> {
         let imageName: string | undefined;
-        if (image) imageName = await this.imageService.uploadImage(image, 'users');
+        if (image) imageName = await this.imageService.uploadImage(image, userID, 'users');
 
         const updateDto = imageName ? dto.withImage(imageName) : dto;
         return this.userRepository.updateUser(updateDto, userID);
