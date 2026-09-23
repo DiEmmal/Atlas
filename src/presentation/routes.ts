@@ -13,18 +13,21 @@ export class AppRoutes {
         const authRoutes = new AuthRoutes(
             dependencies.userRepository,
             dependencies.authService,
+            dependencies.errorService,
         );
 
         const postsRoutes = new PostsRoutes(
             dependencies.postRepository,
             dependencies.authMiddleware,
             dependencies.imageService,
+            dependencies.errorService,
         );
 
         const usersRoutes = new UsersRoutes(
             dependencies.userRepository,
             dependencies.authMiddleware,
             dependencies.imageService,
+            dependencies.errorService,
         );
 
         router.use('/api/auth', authRoutes.routes());

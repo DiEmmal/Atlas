@@ -17,8 +17,6 @@ export class PostDatasourceImpl implements PostDatasource {
         });
 
         const savedPost = await PostModel.create(newPost);
-        console.log(`post imaged: ${savedPost.img}`);
-
         return PostEntity.fromObject(savedPost);
 
     };
@@ -42,7 +40,8 @@ export class PostDatasourceImpl implements PostDatasource {
             };
 
         } catch (error) {
-            throw CustomHttpError.internalServerError(`${error}`);
+            if (error instanceof CustomHttpError) throw error;
+            throw CustomHttpError.internalServerError('Unable to retrieve posts');
         };
 
     };
@@ -76,7 +75,8 @@ export class PostDatasourceImpl implements PostDatasource {
             };
 
         } catch (error) {
-            throw CustomHttpError.internalServerError(`${error}`);
+            if (error instanceof CustomHttpError) throw error;
+            throw CustomHttpError.internalServerError('Unable to update post likes');
         };
         
     };
@@ -103,12 +103,13 @@ export class PostDatasourceImpl implements PostDatasource {
 
             if(!post) throw CustomHttpError.badRequest(`Post with id ${postID} not found`);
 
-            post.save();
+            await post.save();
 
             return newComment;
             
         } catch (error) {
-            throw CustomHttpError.internalServerError(`Internal server error while creating comment: ${error}`)
+            if (error instanceof CustomHttpError) throw error;
+            throw CustomHttpError.internalServerError('Unable to create comment');
         };
 
     };

@@ -22,7 +22,7 @@ export class MongoDatabase {
             return true;
             
         } catch (error) {
-            console.log('Error connecting to MongoDB');
+            console.error('Error connecting to MongoDB');
 
             throw error;
         };

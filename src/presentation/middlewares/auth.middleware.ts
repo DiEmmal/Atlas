@@ -1,4 +1,5 @@
 import { AuthService, UserEntity, UserRepository } from "../../domain/index.js";
+import type { ErrorService } from "../services/error.service.js";
 import type { NextFunction, Request, Response } from "express";
 
 export class AuthMiddleware {
@@ -6,6 +7,7 @@ export class AuthMiddleware {
     public constructor(
         private readonly repository: UserRepository,
         private readonly service: AuthService,
+        private readonly errorService: ErrorService,
     ) { };
 
     public validateJWT = async (req: Request, res: Response, next: NextFunction) => {
@@ -34,7 +36,7 @@ export class AuthMiddleware {
             next();
 
         } catch (error) {
-            return res.status(500).json({ error: 'Internal server error' })
+            return this.errorService.HandleHttpError(error, res);
         };
 
     };

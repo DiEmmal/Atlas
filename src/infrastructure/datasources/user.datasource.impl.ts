@@ -72,7 +72,8 @@ export class UserDatasourceImpl implements UserDatasource {
             };
 
         } catch (error) {
-            throw CustomHttpError.internalServerError(`${error}`);
+            if (error instanceof CustomHttpError) throw error;
+            throw CustomHttpError.internalServerError('Unable to retrieve users');
         };
     };
 
@@ -87,7 +88,7 @@ export class UserDatasourceImpl implements UserDatasource {
 
         } catch (error) {
             if (error instanceof CustomHttpError) throw error;
-            throw CustomHttpError.internalServerError(`${error}`);
+            throw CustomHttpError.internalServerError('Unable to retrieve user');
         };
 
     };
@@ -113,7 +114,7 @@ export class UserDatasourceImpl implements UserDatasource {
 
         } catch (error) {
             if (error instanceof CustomHttpError) throw error;
-            throw CustomHttpError.internalServerError(`${error}`);
+            throw CustomHttpError.internalServerError('Unable to update user');
         };
 
     };

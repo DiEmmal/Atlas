@@ -27,7 +27,8 @@ export class EmailServiceImpl extends EmailService {
 
             return true;
         } catch (error) {
-            throw error;
+            const reason = error instanceof Error ? error.message : 'Unknown email provider error';
+            throw new Error(`Unable to send email: ${reason}`, { cause: error });
         };
     };
 

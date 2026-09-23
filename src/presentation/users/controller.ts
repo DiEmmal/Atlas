@@ -1,21 +1,15 @@
 import type { Request, Response } from "express";
-import { CustomHttpError, GetUserImageUseCase, ImageService, PaginationDto, UpdateUserDto, UpdateUserUseCase, UserRepository } from "../../domain/index.js";
+import { GetUserImageUseCase, ImageService, PaginationDto, UpdateUserDto, UpdateUserUseCase, UserRepository } from "../../domain/index.js";
 import { envs } from "../../config/envs.js";
+import type { ErrorService } from '../services/error.service.js';
 
 export class UserController {
 
     constructor(
         private readonly repository: UserRepository,
         private readonly imageService: ImageService,
+        private readonly errorService: ErrorService,
     ) { };
-
-    private handleError(error: unknown, res: Response) {
-
-        if (error instanceof CustomHttpError) return res.status(error.httpCode).json({ error: error.message });
-
-        return res.status(500).json({ error: 'Internal server error' });
-
-    };
 
     public getUsers = async (req: Request, res: Response) => {
         const { page, limit } = req.query;
@@ -25,7 +19,7 @@ export class UserController {
 
         return this.repository.getUsers(dto!)
             .then(users => res.status(200).json(users))
-            .catch(error => this.handleError(error, res));
+            .catch(error => this.errorService.HandleHttpError(error, res));
 
     };
 
@@ -36,7 +30,7 @@ export class UserController {
 
         return this.repository.getUserById(userID)
             .then(user => res.status(200).json(user))
-            .catch(error => this.handleError(error, res));
+            .catch(error => this.errorService.HandleHttpError(error, res));
 
     };
 
@@ -48,7 +42,7 @@ export class UserController {
 
         return getUserImageUseCase.execute(fileName)
             .then(imagePath => res.status(200).sendFile(imagePath))
-            .catch(error => this.handleError(error, res));
+            .catch(error => this.errorService.HandleHttpError(error, res));
     };
 
     public updateUser = async (req: Request, res: Response) => {
@@ -72,7 +66,7 @@ export class UserController {
                 message: 'User updated successfully',
                 user: { ...user, imgURL: user.img ? `${envs.WEBSERVICE_URL}/users/image/${user.img}` : undefined },
             }))
-            .catch(error => this.handleError(error, res));
+            .catch(error => this.errorService.HandleHttpError(error, res));
 
     };
 

@@ -1,4 +1,5 @@
-import { AuthService, CreateUserDto, LoginUserDto, RegisterUserUseCase, UserRepository, LoginUserUseCase, ValidateEmailUseCase, CustomHttpError } from '../../domain/index.js';
+import { AuthService, CreateUserDto, LoginUserDto, RegisterUserUseCase, UserRepository, LoginUserUseCase, ValidateEmailUseCase } from '../../domain/index.js';
+import type { ErrorService } from '../services/error.service.js';
 import type { Request, Response } from 'express';
 
 export class AuthController {
@@ -6,16 +7,9 @@ export class AuthController {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authService: AuthService,
+    private readonly errorService: ErrorService,
   ) {
     this.userRepository = userRepository;
-  };
-
-  private handleError(error: unknown, res: Response) {
-
-    if (error instanceof CustomHttpError) return res.status(error.httpCode).json({ error: error.message });
-
-    return res.status(500).json({ error: 'Internal server error' });
-
   };
 
   register = async (req: Request, res: Response) => {
@@ -30,7 +24,7 @@ export class AuthController {
 
     registerUserUseCase.execute(dto!)
       .then(user => res.status(200).json({ message: `User registered successful, welcome ${user.name}!`, user }))
-      .catch(error => this.handleError(error, res));
+      .catch(error => this.errorService.HandleHttpError(error, res));
 
   };
 
@@ -46,7 +40,7 @@ export class AuthController {
 
     loginUserUseCase.execute(dto!)
       .then(({ user, token }) => res.status(200).json({ message: `User logged in successful, welcome again ${user.name}!`, token }))
-      .catch(error => this.handleError(error, res));
+      .catch(error => this.errorService.HandleHttpError(error, res));
 
   };
 
@@ -63,8 +57,8 @@ export class AuthController {
 
     validateEmailUseCase.execute(token)
       .then(validated => res.status(200).json({ message: 'Email validated successfully', validated }))
-      .catch(error => this.handleError(error, res));
+      .catch(error => this.errorService.HandleHttpError(error, res));
 
   };
-  
+
 };

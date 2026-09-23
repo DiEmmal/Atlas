@@ -5,21 +5,23 @@ export class CreatePostDto {
         public readonly content: string,
     ) { };
 
-    static create(obj: { [key: string]: any }): { error?: string, dto?: CreatePostDto } {
+    static create(obj: { [key: string]: unknown }): { error?: string, dto?: CreatePostDto } {
 
-        if (!obj) return { error: 'Invalid post data' };
+        if (!obj || typeof obj !== 'object') return { error: 'Post data must be an object' };
 
         const { title, content, } = obj;
 
-        if(typeof title !== 'string') return { error: 'Title must be a string' };
-        if(!title || title === '') return { error: 'Title cannot be empty' };
-        if(title.length > 100) return { error: 'Title cannot be longer than 100 characters' };
+        if (typeof title !== 'string') return { error: 'Title must be a string' };
+        const normalizedTitle = title.trim();
+        if (normalizedTitle === '') return { error: 'Title cannot be empty' };
+        if (normalizedTitle.length > 100) return { error: 'Title cannot exceed 100 characters' };
 
-        if(typeof content !== 'string') return { error: 'Content must be a string' };
-        if(!content || content === '') return { error: 'Content cannot be empty' };
-        if(content.length > 1000) return { error: 'Content cannot be longer than 1000 characters' };
+        if (typeof content !== 'string') return { error: 'Content must be a string' };
+        const normalizedContent = content.trim();
+        if (normalizedContent === '') return { error: 'Content cannot be empty' };
+        if (normalizedContent.length > 1000) return { error: 'Content cannot exceed 1000 characters' };
 
-        return { dto: new CreatePostDto(title, content) };
+        return { dto: new CreatePostDto(normalizedTitle, normalizedContent) };
 
     };
 
