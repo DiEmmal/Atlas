@@ -20,30 +20,28 @@ export class Server {
     this.port = options.port;
     this.routes = options.routes;
     this.publicPath = options.public_path || 'public';
+    this.configureApp();
   };
 
   public async start() {
-
-    //* Middlewares
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(fileUpload({
-      limits: { fileSize: 1024 * 1024 * 5 }
-    }))
-    //* Public path
-    this.app.use(express.static(this.publicPath));
-    //* Routes
-    this.app.use(this.routes);
-
-    //*SPA
-    this.app.get('/*path', (_req, res) => {
-      res.sendFile('index.html', { root: this.publicPath });
-    });
-
     this.serverListener = this.app.listen(this.port, () => {
       console.log(`Server is running on port ${this.port}`);
     });
 
+  };
+
+  private configureApp() {
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(fileUpload({
+      limits: { fileSize: 1024 * 1024 * 5 }
+    }));
+    this.app.use(express.static(this.publicPath));
+    this.app.use(this.routes);
+
+    this.app.get('/*path', (_req, res) => {
+      res.sendFile('index.html', { root: this.publicPath });
+    });
   };
 
   public close() {
