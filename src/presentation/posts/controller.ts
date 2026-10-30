@@ -20,7 +20,11 @@ export class PostsController {
         const getPostsUseCase = new GetPostsUseCase(this.postRepository);
 
         return getPostsUseCase.execute(dto!)
-            .then(posts => res.status(200).json(posts))
+            .then(({ posts }) => res.status(200).json({
+                message: 'Posts retrieved successfully',
+                posts,
+                total: posts.length,
+            }))
             .catch(error => this.errorService.HandleHttpError(error, res));
 
     };

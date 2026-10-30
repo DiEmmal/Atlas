@@ -20,7 +20,11 @@ export class UserController {
         const getUsersUseCase = new GetUsersUseCase(this.repository);
 
         return getUsersUseCase.execute(dto!)
-            .then(users => res.status(200).json(users))
+            .then(({ users }) => res.status(200).json({
+                message: 'Users retrieved successfully',
+                users,
+                total: users.length,
+            }))
             .catch(error => this.errorService.HandleHttpError(error, res));
 
     };
@@ -33,7 +37,10 @@ export class UserController {
         const getUserByIdUseCase = new GetUserByIdUseCase(this.repository);
 
         return getUserByIdUseCase.execute(userID)
-            .then(user => res.status(200).json(user))
+            .then(user => res.status(200).json({
+                message: 'User retrieved successfully',
+                user,
+            }))
             .catch(error => this.errorService.HandleHttpError(error, res));
 
     };

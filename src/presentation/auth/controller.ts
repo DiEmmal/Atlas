@@ -23,7 +23,10 @@ export class AuthController {
     );
 
     registerUserUseCase.execute(dto!)
-      .then(user => res.status(200).json({ message: `User registered successful, welcome ${user.name}!`, user }))
+      .then(user => res.status(200).json({
+        message: `User registered successful, welcome ${user.name}!`,
+        user,
+      }))
       .catch(error => this.errorService.HandleHttpError(error, res));
 
   };
@@ -39,7 +42,11 @@ export class AuthController {
     );
 
     loginUserUseCase.execute(dto!)
-      .then(({ user, token }) => res.status(200).json({ message: `User logged in successful, welcome again ${user.name}!`, token }))
+      .then(({ user, token }) => res.status(200).json({
+        message: `User logged in successful, welcome again ${user.name}!`,
+        user,
+        token,
+      }))
       .catch(error => this.errorService.HandleHttpError(error, res));
 
   };
@@ -56,7 +63,10 @@ export class AuthController {
     );
 
     validateEmailUseCase.execute(token)
-      .then(validated => res.status(200).json({ message: 'Email validated successfully', validated }))
+      .then(validated => res.status(200).json({
+        message: 'Email validated successfully',
+        validated,
+      }))
       .catch(error => this.errorService.HandleHttpError(error, res));
 
   };
