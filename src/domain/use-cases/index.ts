@@ -6,5 +6,7 @@ export * from './posts/get.use-case.js';
 export * from './posts/toggle-like.use-case.js';
 export * from './posts/create-comment.use-case.js';
 export * from './users/update-user.use-case.js';
+export * from './users/get-users.use-case.js';
+export * from './users/get-user-by-id.use-case.js';
 export * from './posts/get-image.use-case.js';
 export * from './users/get-image.use-case.js';

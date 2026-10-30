@@ -1,5 +1,6 @@
 import { getUUID } from "../../config/index.js";
 import { CustomHttpError } from "../errors/custom-http.error.js";
+import type { PublicUser } from "../interfaces/public-user.js";
 
 export class UserEntity {
     public id: string;
@@ -43,6 +44,16 @@ export class UserEntity {
 
         return newUserEntity;
 
+    };
+
+    public toPublicUser(): PublicUser {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            emailValidated: this.emailValidated,
+            img: this.img,
+        };
     };
 
 };

@@ -1,8 +1,8 @@
 import { LoginUserDto } from "../../dtos/index.js";
-import { UserEntity } from "../../entities/user.entity.js";
 import { CustomHttpError } from "../../errors/custom-http.error.js";
 import { UserRepository } from "../../repositories/user.repository.js";
 import { AuthService } from "../../services/index.js";
+import type { PublicUser } from "../../interfaces/public-user.js";
 
 export class LoginUserUseCase { 
 
@@ -11,7 +11,7 @@ export class LoginUserUseCase {
         private readonly authService: AuthService
     ){};
 
-    async execute(dto: LoginUserDto): Promise<{ user: UserEntity, token: string }> {
+    async execute(dto: LoginUserDto): Promise<{ user: PublicUser, token: string }> {
         const user = await this.userRepository.login(dto);
 
         if(user.emailValidated === false) throw CustomHttpError.unauthorized('User email is not validated yet');
@@ -24,7 +24,7 @@ export class LoginUserUseCase {
         const token = await this.authService.generateJWT({ email: user.email, id: user.id }, 3600);
         if(!token) throw CustomHttpError.internalServerError('Error generating token');
 
-        return { user, token };
+        return { user: user.toPublicUser(), token };
 
     };
 

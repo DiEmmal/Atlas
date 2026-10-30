@@ -1,8 +1,8 @@
 import { CreateUserDto } from "../../dtos/index.js";
-import { UserEntity } from "../../entities/user.entity.js";
 import { CustomHttpError } from "../../errors/custom-http.error.js";
 import { UserRepository } from "../../repositories/user.repository.js";
 import { AuthService } from "../../services/index.js";
+import type { PublicUser } from "../../interfaces/public-user.js";
 
 export class RegisterUserUseCase { 
 
@@ -11,7 +11,7 @@ export class RegisterUserUseCase {
         private readonly authService: AuthService
     ){};
 
-    async execute(dto: CreateUserDto): Promise<UserEntity> {
+    async execute(dto: CreateUserDto): Promise<PublicUser> {
         let {email, name, password} = dto;
         
         const existingUser = await this.userRepository.findByEmail(email);
@@ -28,7 +28,7 @@ export class RegisterUserUseCase {
             password
         });
 
-        return user;
+        return user.toPublicUser();
 
     };
 

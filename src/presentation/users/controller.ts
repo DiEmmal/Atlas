@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { GetUserImageUseCase, ImageService, PaginationDto, UpdateUserDto, UpdateUserUseCase, UserRepository } from "../../domain/index.js";
+import { GetUserByIdUseCase, GetUserImageUseCase, GetUsersUseCase, ImageService, PaginationDto, UpdateUserDto, UpdateUserUseCase, UserRepository } from "../../domain/index.js";
 import { envs } from "../../config/envs.js";
 import type { ErrorService } from '../services/error.service.js';
 
@@ -17,7 +17,9 @@ export class UserController {
 
         if (error) return res.status(400).json({ error });
 
-        return this.repository.getUsers(dto!)
+        const getUsersUseCase = new GetUsersUseCase(this.repository);
+
+        return getUsersUseCase.execute(dto!)
             .then(users => res.status(200).json(users))
             .catch(error => this.errorService.HandleHttpError(error, res));
 
@@ -28,7 +30,9 @@ export class UserController {
 
         if (!userID) return res.status(400).json({ error: 'User id is required' });
 
-        return this.repository.getUserById(userID)
+        const getUserByIdUseCase = new GetUserByIdUseCase(this.repository);
+
+        return getUserByIdUseCase.execute(userID)
             .then(user => res.status(200).json(user))
             .catch(error => this.errorService.HandleHttpError(error, res));
 

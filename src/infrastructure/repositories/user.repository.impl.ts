@@ -1,4 +1,12 @@
-import { CreateUserDto, LoginUserDto, PaginationDto, UpdateUserDto, UserDatasource, UserEntity, UserRepository } from "../../domain/index.js";
+import {
+    CreateUserDto,
+    LoginUserDto,
+    PaginationDto,
+    UpdateUserDto,
+    UserDatasource,
+    UserRepository,
+    UserEntity
+} from "../../domain/index.js";
 
 export class UserRepositoryImpl implements UserRepository {
 
